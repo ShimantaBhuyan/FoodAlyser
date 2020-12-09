@@ -81202,7 +81202,7 @@ const SearchRecipe = (_ref) => {
   }, /*#__PURE__*/_react.default.createElement(_CardContent.default, null, /*#__PURE__*/_react.default.createElement("p", {
     color: "primary",
     className: "title"
-  }, "Search for food here"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "Search for food analysis"), /*#__PURE__*/_react.default.createElement("div", {
     className: classes.search
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: classes.searchIcon
@@ -82816,6 +82816,8 @@ var _over = require("@mui-treasury/styles/shadow/over");
 
 require("../styles/main.css");
 
+var _core = require("@material-ui/core");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -82888,6 +82890,22 @@ const useStyles = (0, _styles.makeStyles)((_ref) => {
     },
     boldText: {
       fontWeight: 'bold'
+    },
+    button: {
+      fontSize: "0.875rem !important",
+      minWidth: "64px !important",
+      boxSizing: "border-box !important",
+      transition: "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
+      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif !important",
+      fontWeight: "500 !important",
+      lineHeight: "1.75 !important",
+      borderRadius: "4px !important",
+      letterSpacing: "0.02857em !important",
+      textTransform: "uppercase !important"
+    },
+    recipeCardContent: {
+      maxHeight: "300px !important",
+      overflow: "hidden !important"
     }
   };
 });
@@ -82905,12 +82923,42 @@ const RecipeCard = (_ref2) => {
         contentStyles = _objectWithoutProperties(_useBlogTextInfoConte, ["button"]);
 
   const shadowStyles = (0, _over.useOverShadowStyles)();
+
+  const showNutrients = event => {
+    const actionButton = event.target;
+    const nutrientCard = actionButton.parentNode.nextElementSibling;
+
+    if (!nutrientCard) {
+      console.log("Back");
+      actionButton.parentNode.classList.remove("up");
+      actionButton.parentNode.classList.add("down"); //actionButton.parentNode.previousElementSibling.style.display = "block";
+
+      if (actionButton.parentNode.previousElementSibling.classList.contains("down")) {
+        actionButton.parentNode.previousElementSibling.classList.remove("down");
+      } //actionButton.parentNode.previousElementSibling.classList.add("up")
+
+    } else if (nutrientCard.classList.contains("down")) {
+      if (actionButton.parentNode.classList.contains("up")) {
+        actionButton.parentNode.classList.remove("up");
+      }
+
+      actionButton.parentNode.classList.add("down"); //actionButton.parentNode.style.display = "none"
+
+      nutrientCard.classList.remove("down");
+      nutrientCard.classList.add("up");
+    }
+  };
+
   return /*#__PURE__*/_react.default.createElement(_Card.default, {
-    className: (0, _clsx.default)(styles.root, shadowStyles.root)
+    className: (0, _clsx.default)(styles.root)
   }, /*#__PURE__*/_react.default.createElement(_CardMedia.default, {
     className: styles.media,
     image: recipe.recipe.image
-  }), /*#__PURE__*/_react.default.createElement(_CardContent.default, null, /*#__PURE__*/_react.default.createElement("p", {
+  }), /*#__PURE__*/_react.default.createElement(_CardContent.default, {
+    className: styles.recipeCardContent
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "recipeDataContent"
+  }, /*#__PURE__*/_react.default.createElement("p", {
     className: "servingSizeText"
   }, "Serves: ", recipe.recipe.yield), /*#__PURE__*/_react.default.createElement("p", {
     className: "recipeNameText"
@@ -82918,15 +82966,35 @@ const RecipeCard = (_ref2) => {
     className: "labelText"
   }, "Calories: ", /*#__PURE__*/_react.default.createElement("span", {
     className: styles.boldText
-  }, Math.round(recipe.recipe.calories * 100) / 100 + " kCal")), /*#__PURE__*/_react.default.createElement("p", {
+  }, Math.round(recipe.recipe.calories * 100) / 100 + " Cal")), /*#__PURE__*/_react.default.createElement("p", {
     className: "labelText"
   }, "Health Labels: ", /*#__PURE__*/_react.default.createElement("span", {
     className: styles.boldText
   }, recipe.recipe.healthLabels.reduce((labels, label) => {
     return labels + ", " + label;
-  }))), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    className: buttonStyles
-  }, "Details")));
+  }))), /*#__PURE__*/_react.default.createElement("button", {
+    className: (styles.button, buttonStyles, (0, _clsx.default)(shadowStyles.root)),
+    onClick: showNutrients
+  }, "Nutrient Details")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "down"
+  }, /*#__PURE__*/_react.default.createElement("p", {
+    className: "servingSizeText"
+  }, "DUMMY: ", recipe.recipe.yield), /*#__PURE__*/_react.default.createElement("p", {
+    className: "recipeNameText"
+  }, recipe.recipe.label), /*#__PURE__*/_react.default.createElement("p", {
+    className: "labelText"
+  }, "DUMMY: ", /*#__PURE__*/_react.default.createElement("span", {
+    className: styles.boldText
+  }, Math.round(recipe.recipe.calories * 100) / 100 + " Cal")), /*#__PURE__*/_react.default.createElement("p", {
+    className: "labelText"
+  }, "Health Labels: ", /*#__PURE__*/_react.default.createElement("span", {
+    className: styles.boldText
+  }, recipe.recipe.healthLabels.reduce((labels, label) => {
+    return labels + ", " + label;
+  }))), /*#__PURE__*/_react.default.createElement("button", {
+    className: (styles.button, buttonStyles, (0, _clsx.default)(shadowStyles.root)),
+    onClick: showNutrients
+  }, "Back"))));
 }; // const Recipe = ({recipe}) => {
 //     console.log(recipe)
 //     var recipeImageStyle = {
@@ -82953,7 +83021,7 @@ const RecipeCard = (_ref2) => {
 
 var _default = RecipeCard;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","clsx":"node_modules/clsx/dist/clsx.m.js","@material-ui/core/styles":"node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardMedia":"node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/CardContent":"node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/Button":"node_modules/@material-ui/core/esm/Button/index.js","@mui-treasury/styles/textInfoContent/blog":"node_modules/@mui-treasury/styles/textInfoContent/blog/index.js","@mui-treasury/styles/shadow/over":"node_modules/@mui-treasury/styles/shadow/over/index.js","../styles/main.css":"styles/main.css"}],"components/App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","clsx":"node_modules/clsx/dist/clsx.m.js","@material-ui/core/styles":"node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardMedia":"node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/CardContent":"node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/Button":"node_modules/@material-ui/core/esm/Button/index.js","@mui-treasury/styles/textInfoContent/blog":"node_modules/@mui-treasury/styles/textInfoContent/blog/index.js","@mui-treasury/styles/shadow/over":"node_modules/@mui-treasury/styles/shadow/over/index.js","../styles/main.css":"styles/main.css","@material-ui/core":"node_modules/@material-ui/core/esm/index.js"}],"components/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -82991,7 +83059,7 @@ const App = () => {
       await setRecipeQuery(data);
       setRecipeDataMsg("");
     });else {
-      if (value == "") setRecipeDataMsg("Please enter some recipe name to search");else setRecipeDataMsg("Recipe not found");
+      if (value == "") setRecipeDataMsg("Please enter some recipe name to search");else setRecipeDataMsg("Recipe not found! Please check again");
     }
   };
 
@@ -83004,7 +83072,7 @@ const App = () => {
     className: "main"
   }, /*#__PURE__*/_react.default.createElement("h1", {
     id: "headerText"
-  }, "Welcome to FoodAlyser!"), /*#__PURE__*/_react.default.createElement(_search.default, {
+  }, "FoodAlyser!"), /*#__PURE__*/_react.default.createElement(_search.default, {
     handleOnSearch: handleSearch
   }), recipeQuery != "" ? /*#__PURE__*/_react.default.createElement("div", {
     className: "recipesContainer"
@@ -83030,7 +83098,18 @@ const App = () => {
   // }          
   // </div>
   // : recipeDataMsg
-  );
+  , /*#__PURE__*/_react.default.createElement("div", {
+    id: "iconsAttribution"
+  }, "Icons by ", /*#__PURE__*/_react.default.createElement("a", {
+    href: "https://www.flaticon.com/authors/freepik",
+    title: "Freepik"
+  }, "Freepik"), " from ", /*#__PURE__*/_react.default.createElement("a", {
+    href: "https://www.flaticon.com/",
+    title: "Flaticon"
+  }, "www.flaticon.com")), /*#__PURE__*/_react.default.createElement("div", {
+    id: "edamam-badge",
+    "data-color": "transparent"
+  }));
 };
 
 var _default = App;
@@ -83075,7 +83154,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50712" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53807" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
