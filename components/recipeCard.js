@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { useBlogTextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/blog';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import "../styles/main.css";
+import { Hidden } from "@material-ui/core";
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   root: {
@@ -70,32 +71,89 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   boldText: {
       fontWeight: 'bold',
   },
+  button: {
+    fontSize: "0.875rem !important",
+    minWidth: "64px !important",
+    boxSizing: "border-box !important",
+    transition: "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif !important",
+    fontWeight: "500 !important",
+    lineHeight: "1.75 !important",
+    borderRadius: "4px !important",
+    letterSpacing: "0.02857em !important",
+    textTransform: "uppercase !important"
+  },
+  recipeCardContent: {
+    maxHeight: "300px !important",
+    overflow: "hidden !important"
+  }
 }));
 
 const RecipeCard = ({recipe}) => {
     const styles = useStyles();
+
     const {
         button: buttonStyles, 
         ...contentStyles
     } = useBlogTextInfoContentStyles();
+
     const shadowStyles = useOverShadowStyles();
+
+    const showNutrients = (event) => {
+      const actionButton = event.target
+      const nutrientCard = actionButton.parentNode.nextElementSibling
+      if(!nutrientCard) {
+        console.log("Back")
+        actionButton.parentNode.classList.remove("up")
+        actionButton.parentNode.classList.add("down")
+        //actionButton.parentNode.previousElementSibling.style.display = "block";
+        if(actionButton.parentNode.previousElementSibling.classList.contains("down")) {
+          actionButton.parentNode.previousElementSibling.classList.remove("down")
+        }
+        //actionButton.parentNode.previousElementSibling.classList.add("up")
+      }
+      else if(nutrientCard.classList.contains("down")) {
+        if(actionButton.parentNode.classList.contains("up")) {
+          actionButton.parentNode.classList.remove("up")
+        }
+        actionButton.parentNode.classList.add("down")
+        //actionButton.parentNode.style.display = "none"
+        nutrientCard.classList.remove("down")
+        nutrientCard.classList.add("up")
+      }
+    }
+
     return (
-    <Card className={cx(styles.root, shadowStyles.root)}>
+    <Card className={cx(styles.root)}>
         <CardMedia
             className={styles.media}
             image={ recipe.recipe.image }
         />
-        <CardContent>
-            <p className="servingSizeText">Serves: {recipe.recipe.yield}</p>
-            <p className="recipeNameText">{recipe.recipe.label}</p>
-            <p className="labelText">Calories: <span className={styles.boldText}>{(Math.round(recipe.recipe.calories * 100) / 100) + " kCal"}</span></p>
-            <p className="labelText">Health Labels: <span className={styles.boldText}>
-                    {recipe.recipe.healthLabels.reduce((labels, label) => {
-                    return labels + ", " + label
-                    })}
-                </span>            
-            </p>
-            <Button className={buttonStyles}>Details</Button>
+        <CardContent className={styles.recipeCardContent}>
+              <div className="recipeDataContent">
+                <p className="servingSizeText">Serves: {recipe.recipe.yield}</p>
+                <p className="recipeNameText">{recipe.recipe.label}</p>
+                <p className="labelText">Calories: <span className={styles.boldText}>{(Math.round(recipe.recipe.calories * 100) / 100) + " Cal"}</span></p>
+                <p className="labelText">Health Labels: <span className={styles.boldText}>
+                        {recipe.recipe.healthLabels.reduce((labels, label) => {
+                        return labels + ", " + label
+                        })}
+                    </span>            
+                </p>            
+                <button className={styles.button, buttonStyles, cx(shadowStyles.root)} onClick={showNutrients}>Nutrient Details</button>
+              </div>
+              <div className="down">
+                <p className="servingSizeText">DUMMY: {recipe.recipe.yield}</p>
+                <p className="recipeNameText">{recipe.recipe.label}</p>
+                <p className="labelText">DUMMY: <span className={styles.boldText}>{(Math.round(recipe.recipe.calories * 100) / 100) + " Cal"}</span></p>
+                <p className="labelText">Health Labels: <span className={styles.boldText}>
+                        {recipe.recipe.healthLabels.reduce((labels, label) => {
+                        return labels + ", " + label
+                        })}
+                    </span>            
+                </p>      
+                <button className={styles.button, buttonStyles, cx(shadowStyles.root)} onClick={showNutrients}>Back</button>  
+              </div>
         </CardContent>
     </Card>
     )

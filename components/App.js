@@ -31,7 +31,7 @@ const App = () => {
             if(value=="")
                 setRecipeDataMsg("Please enter some recipe name to search")
             else
-                setRecipeDataMsg("Recipe not found")
+                setRecipeDataMsg("Recipe not found! Please check again")
         }
     }
 
@@ -43,38 +43,42 @@ const App = () => {
 
     return (
         <div className="main">        
-            <h1 id="headerText">Welcome to FoodAlyser!</h1>            
-                <SearchRecipe handleOnSearch={handleSearch}/>
-                {
-                    recipeQuery != "" ?
+            <h1 id="headerText">FoodAlyser!</h1>            
+            <SearchRecipe handleOnSearch={handleSearch}/>
+            {
+                recipeQuery != "" ?
+                <div className="recipesContainer">
+                    {
+                        recipeDataMsg == "" ? 
+                            recipeQuery.hits.map((recipeItem, index) => {
+                                return (
+                                    <RecipeCard recipe={recipeItem} key={index} />
+                                )                
+                            }) 
+                        : <p className="messageText">{recipeDataMsg}</p>
+                    }
+                </div> 
+                : (
                     <div className="recipesContainer">
-                        {
-                            recipeDataMsg == "" ? 
-                                recipeQuery.hits.map((recipeItem, index) => {
-                                    return (
-                                        <RecipeCard recipe={recipeItem} key={index}/>
-                                    )                
-                                }) 
-                            : <p className="messageText">{recipeDataMsg}</p>
-                        }
-                    </div> 
-                    : (
-                        <div className="recipesContainer">
-                            <p className="messageText">{recipeDataMsg}</p>
-                        </div>
-                    )
-                    // recipeQuery != "" ?             
-                    // <div className="recipesContainer">
-                    // {
-                    //     recipeQuery.hits.map((recipeItem, index) => {
-                    //         return (
-                    //             <RecipeCard recipe={recipeItem} key={index}/>
-                    //         )                
-                    //     })   
-                    // }          
-                    // </div>
-                    // : recipeDataMsg
-                }
+                        <p className="messageText">{recipeDataMsg}</p>
+                    </div>
+                )
+                // recipeQuery != "" ?             
+                // <div className="recipesContainer">
+                // {
+                //     recipeQuery.hits.map((recipeItem, index) => {
+                //         return (
+                //             <RecipeCard recipe={recipeItem} key={index}/>
+                //         )                
+                //     })   
+                // }          
+                // </div>
+                // : recipeDataMsg
+            }
+            <div id="iconsAttribution">
+                Icons by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+            </div>
+            <div id="edamam-badge" data-color="transparent"></div>
         </div>
     )
 }

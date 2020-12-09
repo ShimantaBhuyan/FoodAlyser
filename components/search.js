@@ -70,7 +70,7 @@ const SearchRecipe = ({handleOnSearch}) => {
     return (
         <Card className="root">
             <CardContent>
-                <p color="primary" className="title">Search for food here</p>  
+                <p color="primary" className="title">Search for food analysis</p>  
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>
                         <SearchIcon />

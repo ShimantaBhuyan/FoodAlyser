@@ -2,6 +2,10 @@ html, body{
     height: 100%;
     margin: 0;
     font-family: 'Open Sans', sans-serif !important;
+    overflow-x: hidden !important;
+}
+
+body {    
     overflow-y: scroll;
 }
 
@@ -101,6 +105,55 @@ button {
     color: #000000a8;
     font-weight: 600;
     grid-column-start: 2;
+}
+
+#edamam-badge {
+    position: fixed;
+    bottom: 0;
+    right: -130px;
+    transition: right 1s;
+    background-color: #ffffff9d;
+    border-radius: 20px;
+    padding-left: 3px;
+}
+
+#iconsAttribution {   
+    font-size: 12px; 
+    position: fixed;
+    bottom: 55px;
+    right: -176px;
+    transition: right 1s;
+    background-color: #0000002d;
+    border-radius: 6px;
+    padding-left: 3px;
+}
+
+#edamam-badge:hover, #iconsAttribution:hover {
+    right: 0;
+}
+
+.recipeDataContent {
+    transform: translateY(0) translateZ(0) !important;
+}
+
+.down {
+    transform: translateY(100%) translateY(5em) translateZ(0) !important;
+}
+
+.up {
+    transform: translateY(-105%) translateZ(0) !important;
+}
+
+.down, .up, .recipeDataContent {    
+    transition: transform 0.5s ease-out;
+}
+
+.up::before {      
+    position: absolute !important;
+    -webkit-filter: blur(5px) !important;
+    filter: blur(5px) !important;
+    background-size: cover !important;
+    opacity: 0.5 !important;
 }
 
 @media screen and (max-height:1024px){
