@@ -81192,7 +81192,6 @@ const SearchRecipe = (_ref) => {
   const classes = useStyles();
 
   const handleSearch = event => {
-    console.log(event.nativeEvent.type);
     var charCode = event.key;
     if (event.nativeEvent.type === "keypress" && charCode === "Enter") handleOnSearch(event.target.value);else if (event.nativeEvent.type === "click") handleOnSearch(document.getElementById("searchField").value);
   };
@@ -82816,8 +82815,6 @@ var _over = require("@mui-treasury/styles/shadow/over");
 
 require("../styles/main.css");
 
-var _core = require("@material-ui/core");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -82868,18 +82865,7 @@ const useStyles = (0, _styles.makeStyles)((_ref) => {
         marginTop: 0,
         transform: 'translateX(-8px)'
       },
-      '&:after': {
-        content: '" "',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        // backgroundImage: 'linear-gradient(147deg, #fe8a39 0%, #fd3838 74%)',
-        borderRadius: spacing(2),
-        // 16
-        opacity: 0.5
-      }
+      contentVisibility: 'auto'
     },
     content: {
       padding: 24
@@ -82905,7 +82891,7 @@ const useStyles = (0, _styles.makeStyles)((_ref) => {
     },
     recipeCardContent: {
       maxHeight: "300px !important",
-      overflow: "hidden !important"
+      overflowY: "hidden !important"
     }
   };
 });
@@ -82929,7 +82915,6 @@ const RecipeCard = (_ref2) => {
     const nutrientCard = actionButton.parentNode.nextElementSibling;
 
     if (!nutrientCard) {
-      console.log("Back");
       actionButton.parentNode.classList.remove("up");
       actionButton.parentNode.classList.add("down"); //actionButton.parentNode.previousElementSibling.style.display = "block";
 
@@ -82973,26 +82958,26 @@ const RecipeCard = (_ref2) => {
   }, recipe.recipe.healthLabels.reduce((labels, label) => {
     return labels + ", " + label;
   }))), /*#__PURE__*/_react.default.createElement("button", {
-    className: (styles.button, buttonStyles, (0, _clsx.default)(shadowStyles.root)),
+    className: (styles.button, (0, _clsx.default)(shadowStyles.root)),
     onClick: showNutrients
   }, "Nutrient Details")), /*#__PURE__*/_react.default.createElement("div", {
     className: "down"
   }, /*#__PURE__*/_react.default.createElement("p", {
-    className: "servingSizeText"
-  }, "DUMMY: ", recipe.recipe.yield), /*#__PURE__*/_react.default.createElement("p", {
     className: "recipeNameText"
-  }, recipe.recipe.label), /*#__PURE__*/_react.default.createElement("p", {
+  }, "Basic Nutrient Information"), /*#__PURE__*/_react.default.createElement("p", {
     className: "labelText"
-  }, "DUMMY: ", /*#__PURE__*/_react.default.createElement("span", {
+  }, "Fats: ", /*#__PURE__*/_react.default.createElement("span", {
     className: styles.boldText
-  }, Math.round(recipe.recipe.calories * 100) / 100 + " Cal")), /*#__PURE__*/_react.default.createElement("p", {
+  }, Math.round(recipe.recipe.digest[0].total * 100) / 100 + " Cal")), /*#__PURE__*/_react.default.createElement("p", {
     className: "labelText"
-  }, "Health Labels: ", /*#__PURE__*/_react.default.createElement("span", {
+  }, "Carbs: ", /*#__PURE__*/_react.default.createElement("span", {
     className: styles.boldText
-  }, recipe.recipe.healthLabels.reduce((labels, label) => {
-    return labels + ", " + label;
-  }))), /*#__PURE__*/_react.default.createElement("button", {
-    className: (styles.button, buttonStyles, (0, _clsx.default)(shadowStyles.root)),
+  }, Math.round(recipe.recipe.digest[1].total * 100) / 100 + " Cal")), /*#__PURE__*/_react.default.createElement("p", {
+    className: "labelText"
+  }, "Protein: ", /*#__PURE__*/_react.default.createElement("span", {
+    className: styles.boldText
+  }, Math.round(recipe.recipe.digest[2].total * 100) / 100 + " Cal")), /*#__PURE__*/_react.default.createElement("button", {
+    className: (styles.button, (0, _clsx.default)(shadowStyles.root)),
     onClick: showNutrients
   }, "Back"))));
 }; // const Recipe = ({recipe}) => {
@@ -83021,7 +83006,7 @@ const RecipeCard = (_ref2) => {
 
 var _default = RecipeCard;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","clsx":"node_modules/clsx/dist/clsx.m.js","@material-ui/core/styles":"node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardMedia":"node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/CardContent":"node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/Button":"node_modules/@material-ui/core/esm/Button/index.js","@mui-treasury/styles/textInfoContent/blog":"node_modules/@mui-treasury/styles/textInfoContent/blog/index.js","@mui-treasury/styles/shadow/over":"node_modules/@mui-treasury/styles/shadow/over/index.js","../styles/main.css":"styles/main.css","@material-ui/core":"node_modules/@material-ui/core/esm/index.js"}],"components/App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","clsx":"node_modules/clsx/dist/clsx.m.js","@material-ui/core/styles":"node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardMedia":"node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/CardContent":"node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/Button":"node_modules/@material-ui/core/esm/Button/index.js","@mui-treasury/styles/textInfoContent/blog":"node_modules/@mui-treasury/styles/textInfoContent/blog/index.js","@mui-treasury/styles/shadow/over":"node_modules/@mui-treasury/styles/shadow/over/index.js","../styles/main.css":"styles/main.css"}],"components/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -83052,19 +83037,23 @@ const App = () => {
   // }, [])
 
   const fetchData = async value => {
-    setRecipeQuery("");
-    console.log("Value entered: " + value);
-    if (value == "dal makhani") fetch("./dalmakhani.json").then(res => res.json()).then(async data => {
-      console.log(data);
-      await setRecipeQuery(data);
-      setRecipeDataMsg("");
-    });else {
-      if (value == "") setRecipeDataMsg("Please enter some recipe name to search");else setRecipeDataMsg("Recipe not found! Please check again");
+    setRecipeQuery(""); //if(value == "dal makhani") 
+
+    if (value == "") setRecipeDataMsg("Please enter some recipe name to search");else {
+      fetch(encodeURI("https://api.edamam.com/search?q=" + value + "&app_id=64d76e5e&app_key=6c46774bcd7dafb42a9ca8cee959f57b")).then(res => {
+        if (res.status == 200) return res.json();else {
+          setRecipeDataMsg("Recipe not found! Please check again");
+        }
+      }).then(async data => {
+        if (data.hits.length == 0) setRecipeDataMsg("Recipe not found! Please check again");else {
+          await setRecipeQuery(data);
+          setRecipeDataMsg("");
+        }
+      });
     }
   };
 
   const handleSearch = value => {
-    console.log(String(recipeQuery.q).toUpperCase());
     if (!recipeQuery.length && String(value).toUpperCase() != String(recipeQuery.q).toUpperCase()) fetchData(value);
   };
 
@@ -83154,7 +83143,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53807" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57300" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
