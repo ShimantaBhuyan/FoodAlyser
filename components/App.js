@@ -18,25 +18,31 @@ const App = () => {
 
     const fetchData = async (value) => {
         setRecipeQuery("")
-        console.log("Value entered: " + value)
-        if(value == "dal makhani") 
-            fetch("./dalmakhani.json")
-            .then((res) => res.json())
-            .then(async (data) => {
-                console.log(data)
-                await setRecipeQuery(data)  
-                setRecipeDataMsg("")
+        //if(value == "dal makhani") 
+        
+        if(value=="")
+            setRecipeDataMsg("Please enter some recipe name to search")
+        else {            
+            fetch(encodeURI("https://api.edamam.com/search?q=" + value + "&app_id=64d76e5e&app_key=6c46774bcd7dafb42a9ca8cee959f57b"))
+            .then((res) => { 
+                if(res.status == 200)
+                    return res.json() 
+                else {
+                    setRecipeDataMsg("Recipe not found! Please check again")
+                }
             })
-        else{
-            if(value=="")
-                setRecipeDataMsg("Please enter some recipe name to search")
-            else
-                setRecipeDataMsg("Recipe not found! Please check again")
+            .then(async (data) => {
+                if(data.hits.length == 0)                    
+                    setRecipeDataMsg("Recipe not found! Please check again")
+                else {
+                    await setRecipeQuery(data)  
+                    setRecipeDataMsg("")
+                }
+            })
         }
     }
 
     const handleSearch = (value) => { 
-        console.log(String(recipeQuery.q).toUpperCase())
         if(!recipeQuery.length && String(value).toUpperCase() != String(recipeQuery.q).toUpperCase())
             fetchData(value)
     }

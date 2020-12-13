@@ -141,7 +141,7 @@ button {
 }
 
 .up {
-    transform: translateY(-105%) translateZ(0) !important;
+    transform: translateY(-115%) translateZ(0) !important;
 }
 
 .down, .up, .recipeDataContent {    
@@ -181,6 +181,7 @@ button {
     .root, .MuiPaper-root, .MuiCard-root {
         min-width: 95vw;
         min-height: 15vh;
+        max-height: 450px;
     }
     .title {
         font-size: 20px;

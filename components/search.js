@@ -58,7 +58,6 @@ const SearchRecipe = ({handleOnSearch}) => {
     const classes = useStyles()
 
     const handleSearch = (event) => {     
-        console.log(event.nativeEvent.type)
 
         var charCode = event.key
         if(event.nativeEvent.type === "keypress" && charCode === "Enter")

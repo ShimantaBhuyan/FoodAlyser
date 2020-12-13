@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import { useBlogTextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/blog';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import "../styles/main.css";
-import { Hidden } from "@material-ui/core";
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   root: {
@@ -49,17 +48,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
       marginTop: 0,
       transform: 'translateX(-8px)',
     },
-    '&:after': {
-      content: '" "',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-    // backgroundImage: 'linear-gradient(147deg, #fe8a39 0%, #fd3838 74%)',
-      borderRadius: spacing(2), // 16
-      opacity: 0.5,
-    },
+    contentVisibility: 'auto'
   },
   content: {
     padding: 24,
@@ -85,7 +74,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   },
   recipeCardContent: {
     maxHeight: "300px !important",
-    overflow: "hidden !important"
+    overflowY: "hidden !important"
   }
 }));
 
@@ -103,7 +92,6 @@ const RecipeCard = ({recipe}) => {
       const actionButton = event.target
       const nutrientCard = actionButton.parentNode.nextElementSibling
       if(!nutrientCard) {
-        console.log("Back")
         actionButton.parentNode.classList.remove("up")
         actionButton.parentNode.classList.add("down")
         //actionButton.parentNode.previousElementSibling.style.display = "block";
@@ -140,19 +128,14 @@ const RecipeCard = ({recipe}) => {
                         })}
                     </span>            
                 </p>            
-                <button className={styles.button, buttonStyles, cx(shadowStyles.root)} onClick={showNutrients}>Nutrient Details</button>
+                <button className={styles.button, cx(shadowStyles.root)} onClick={showNutrients}>Nutrient Details</button>
               </div>
-              <div className="down">
-                <p className="servingSizeText">DUMMY: {recipe.recipe.yield}</p>
-                <p className="recipeNameText">{recipe.recipe.label}</p>
-                <p className="labelText">DUMMY: <span className={styles.boldText}>{(Math.round(recipe.recipe.calories * 100) / 100) + " Cal"}</span></p>
-                <p className="labelText">Health Labels: <span className={styles.boldText}>
-                        {recipe.recipe.healthLabels.reduce((labels, label) => {
-                        return labels + ", " + label
-                        })}
-                    </span>            
-                </p>      
-                <button className={styles.button, buttonStyles, cx(shadowStyles.root)} onClick={showNutrients}>Back</button>  
+              <div className="down">           
+                <p className="recipeNameText">Basic Nutrient Information</p> 
+                <p className="labelText">Fats: <span className={styles.boldText}>{(Math.round(recipe.recipe.digest[0].total * 100) / 100) + " Cal"}</span></p>
+                <p className="labelText">Carbs: <span className={styles.boldText}>{(Math.round(recipe.recipe.digest[1].total * 100) / 100) + " Cal"}</span></p>   
+                <p className="labelText">Protein: <span className={styles.boldText}>{(Math.round(recipe.recipe.digest[2].total * 100) / 100) + " Cal"}</span></p>    
+                <button className={styles.button, cx(shadowStyles.root)} onClick={showNutrients}>Back</button>  
               </div>
         </CardContent>
     </Card>
