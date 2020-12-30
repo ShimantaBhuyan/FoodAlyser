@@ -123,9 +123,10 @@ const RecipeCard = ({recipe}) => {
                 <p className="recipeNameText">{recipe.recipe.label}</p>
                 <p className="labelText">Calories: <span className={styles.boldText}>{(Math.round(recipe.recipe.calories * 100) / 100) + " Cal"}</span></p>
                 <p className="labelText">Health Labels: <span className={styles.boldText}>
-                        {recipe.recipe.healthLabels.reduce((labels, label) => {
+                        {recipe.recipe.healthLabels.length ? recipe.recipe.healthLabels.reduce((labels, label) => {
                         return labels + ", " + label
-                        })}
+                        }) : "N.A."
+                        }
                     </span>            
                 </p>            
                 <button className={styles.button, cx(shadowStyles.root)} onClick={showNutrients}>Nutrient Details</button>

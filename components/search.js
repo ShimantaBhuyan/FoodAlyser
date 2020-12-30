@@ -6,6 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { Button } from "@material-ui/core";
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -54,16 +56,61 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const SearchRecipe = ({handleOnSearch}) => {
+const SearchRecipe = ({handleOnSearch, sortOn, onSort}) => {
+    const sortFields = [
+      {
+        value: 'default',
+        label: 'Select'
+      },
+      {
+        value: 'yield',
+        label: 'Servings',
+      },
+      {
+        value: 'calories',
+        label: 'Calories',
+      }
+    ]
+
     const classes = useStyles()
+    
+    const [sortField, setSortField] = React.useState('Select');
 
     const handleSearch = (event) => {     
-
         var charCode = event.key
         if(event.nativeEvent.type === "keypress" && charCode === "Enter")
             handleOnSearch(event.target.value)
         else if(event.nativeEvent.type === "click")
             handleOnSearch(document.getElementById("searchField").value)
+    }
+
+    const handleSort = (event) => {
+        setSortField(event.target.value)
+        onSort(event.target.value)
+    }
+
+    const sortComp = (sortON) => {
+      if(sortON) {
+        return (
+          <TextField
+                  id="sortRecipe"
+                  select
+                  label="Select to sort recipes"
+                  value={sortField}
+                  onChange={handleSort}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  variant="filled"
+                >
+                  {sortFields.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
+        )
+      }
     }
 
     return (
@@ -86,6 +133,7 @@ const SearchRecipe = ({handleOnSearch}) => {
                     />                    
                 </div>
                 <Button id="searchButton" type="submit" onClick={handleSearch}>Analyse</Button>
+                {sortComp(sortOn)}
             </CardContent>
         </Card>
     )

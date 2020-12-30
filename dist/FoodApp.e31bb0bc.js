@@ -81136,6 +81136,10 @@ var _InputBase = _interopRequireDefault(require("@material-ui/core/InputBase"));
 
 var _core = require("@material-ui/core");
 
+var _TextField = _interopRequireDefault(require("@material-ui/core/TextField"));
+
+var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const useStyles = (0, _styles.makeStyles)(theme => ({
@@ -81187,13 +81191,51 @@ const useStyles = (0, _styles.makeStyles)(theme => ({
 
 const SearchRecipe = (_ref) => {
   let {
-    handleOnSearch
+    handleOnSearch,
+    sortOn,
+    onSort
   } = _ref;
+  const sortFields = [{
+    value: 'default',
+    label: 'Select'
+  }, {
+    value: 'yield',
+    label: 'Servings'
+  }, {
+    value: 'calories',
+    label: 'Calories'
+  }];
   const classes = useStyles();
+
+  const [sortField, setSortField] = _react.default.useState('Select');
 
   const handleSearch = event => {
     var charCode = event.key;
     if (event.nativeEvent.type === "keypress" && charCode === "Enter") handleOnSearch(event.target.value);else if (event.nativeEvent.type === "click") handleOnSearch(document.getElementById("searchField").value);
+  };
+
+  const handleSort = event => {
+    setSortField(event.target.value);
+    onSort(event.target.value);
+  };
+
+  const sortComp = sortON => {
+    if (sortON) {
+      return /*#__PURE__*/_react.default.createElement(_TextField.default, {
+        id: "sortRecipe",
+        select: true,
+        label: "Select to sort recipes",
+        value: sortField,
+        onChange: handleSort,
+        SelectProps: {
+          native: true
+        },
+        variant: "filled"
+      }, sortFields.map(option => /*#__PURE__*/_react.default.createElement("option", {
+        key: option.value,
+        value: option.value
+      }, option.label)));
+    }
   };
 
   return /*#__PURE__*/_react.default.createElement(_Card.default, {
@@ -81220,12 +81262,12 @@ const SearchRecipe = (_ref) => {
     id: "searchButton",
     type: "submit",
     onClick: handleSearch
-  }, "Analyse")));
+  }, "Analyse"), sortComp(sortOn)));
 };
 
 var _default = SearchRecipe;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","../styles/main.css":"styles/main.css","@material-ui/core/styles":"node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardContent":"node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/icons/Search":"node_modules/@material-ui/icons/Search.js","@material-ui/core/InputBase":"node_modules/@material-ui/core/esm/InputBase/index.js","@material-ui/core":"node_modules/@material-ui/core/esm/index.js"}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../styles/main.css":"styles/main.css","@material-ui/core/styles":"node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardContent":"node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/icons/Search":"node_modules/@material-ui/icons/Search.js","@material-ui/core/InputBase":"node_modules/@material-ui/core/esm/InputBase/index.js","@material-ui/core":"node_modules/@material-ui/core/esm/index.js","@material-ui/core/TextField":"node_modules/@material-ui/core/esm/TextField/index.js","@material-ui/core/MenuItem":"node_modules/@material-ui/core/esm/MenuItem/index.js"}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -82955,9 +82997,9 @@ const RecipeCard = (_ref2) => {
     className: "labelText"
   }, "Health Labels: ", /*#__PURE__*/_react.default.createElement("span", {
     className: styles.boldText
-  }, recipe.recipe.healthLabels.reduce((labels, label) => {
+  }, recipe.recipe.healthLabels.length ? recipe.recipe.healthLabels.reduce((labels, label) => {
     return labels + ", " + label;
-  }))), /*#__PURE__*/_react.default.createElement("button", {
+  }) : "N.A.")), /*#__PURE__*/_react.default.createElement("button", {
     className: (styles.button, (0, _clsx.default)(shadowStyles.root)),
     onClick: showNutrients
   }, "Nutrient Details")), /*#__PURE__*/_react.default.createElement("div", {
@@ -83028,17 +83070,22 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 const App = () => {
   let [recipeQuery, setRecipeQuery] = (0, _react.useState)("");
   let [recipeDataMsg, setRecipeDataMsg] = (0, _react.useState)("");
-  let [recipes, setRecipe] = (0, _react.useState)({}); // componentDidMount: Load recipes from json file(later from Edamam API)
+  let [recipes, setRecipes] = (0, _react.useState)({}); // componentDidMount: Load recipes from json file(later from Edamam API)
   // useEffect (() => {
   //     fetchData()
   // }, [])
 
   const fetchData = async value => {
-    setRecipeQuery(""); //if(value == "dal makhani") 
-
+    setRecipeQuery("");
     if (value == "") setRecipeDataMsg("Please enter some recipe name to search");else {
       fetch(encodeURI("https://api.edamam.com/search?q=" + value + "&app_id=64d76e5e&app_key=6c46774bcd7dafb42a9ca8cee959f57b")).then(res => {
         if (res.status == 200) return res.json();else {
@@ -83046,7 +83093,7 @@ const App = () => {
         }
       }).then(async data => {
         if (data.hits.length == 0) setRecipeDataMsg("Recipe not found! Please check again");else {
-          await setRecipeQuery(data);
+          setRecipeQuery(data);
           setRecipeDataMsg("");
         }
       });
@@ -83057,13 +83104,32 @@ const App = () => {
     if (!recipeQuery.length && String(value).toUpperCase() != String(recipeQuery.q).toUpperCase()) fetchData(value);
   };
 
+  const handleSort = value => {
+    //alert(value)
+    var sortedRecipes = _objectSpread({}, recipeQuery);
+
+    if (value == "yield") {
+      sortedRecipes.hits.sort((recipe1, recipe2) => {
+        return recipe1.recipe.yield - recipe2.recipe.yield;
+      });
+    } else if (value == "calories") {
+      sortedRecipes.hits.sort((recipe1, recipe2) => {
+        return recipe1.recipe.calories - recipe2.recipe.calories;
+      });
+    }
+
+    setRecipeQuery(sortedRecipes);
+  };
+
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "main"
   }, /*#__PURE__*/_react.default.createElement("h1", {
     id: "headerText"
-  }, "FoodAlyser!"), /*#__PURE__*/_react.default.createElement(_search.default, {
-    handleOnSearch: handleSearch
-  }), recipeQuery != "" ? /*#__PURE__*/_react.default.createElement("div", {
+  }, "FoodAlyser!"), recipeQuery != "" ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_search.default, {
+    handleOnSearch: handleSearch,
+    sortOn: true,
+    onSort: handleSort
+  }), /*#__PURE__*/_react.default.createElement("div", {
     className: "recipesContainer"
   }, recipeDataMsg == "" ? recipeQuery.hits.map((recipeItem, index) => {
     return /*#__PURE__*/_react.default.createElement(_recipeCard.default, {
@@ -83072,11 +83138,13 @@ const App = () => {
     });
   }) : /*#__PURE__*/_react.default.createElement("p", {
     className: "messageText"
-  }, recipeDataMsg)) : /*#__PURE__*/_react.default.createElement("div", {
+  }, recipeDataMsg))) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_search.default, {
+    handleOnSearch: handleSearch
+  }), /*#__PURE__*/_react.default.createElement("div", {
     className: "recipesContainer"
   }, /*#__PURE__*/_react.default.createElement("p", {
     className: "messageText"
-  }, recipeDataMsg)) // recipeQuery != "" ?             
+  }, recipeDataMsg))) // recipeQuery != "" ?             
   // <div className="recipesContainer">
   // {
   //     recipeQuery.hits.map((recipeItem, index) => {
@@ -83143,7 +83211,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57300" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58447" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

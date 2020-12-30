@@ -9,7 +9,7 @@ const App = () => {
 
     let [recipeQuery, setRecipeQuery] = useState("")
     let [recipeDataMsg, setRecipeDataMsg] = useState("")
-    let [recipes, setRecipe] = useState({})
+    let [recipes, setRecipes] = useState({})
     
     // componentDidMount: Load recipes from json file(later from Edamam API)
     // useEffect (() => {
@@ -17,12 +17,10 @@ const App = () => {
     // }, [])
 
     const fetchData = async (value) => {
-        setRecipeQuery("")
-        //if(value == "dal makhani") 
-        
+        setRecipeQuery("")        
         if(value=="")
             setRecipeDataMsg("Please enter some recipe name to search")
-        else {            
+        else {   
             fetch(encodeURI("https://api.edamam.com/search?q=" + value + "&app_id=64d76e5e&app_key=6c46774bcd7dafb42a9ca8cee959f57b"))
             .then((res) => { 
                 if(res.status == 200)
@@ -35,7 +33,7 @@ const App = () => {
                 if(data.hits.length == 0)                    
                     setRecipeDataMsg("Recipe not found! Please check again")
                 else {
-                    await setRecipeQuery(data)  
+                    setRecipeQuery(data)  
                     setRecipeDataMsg("")
                 }
             })
@@ -47,27 +45,48 @@ const App = () => {
             fetchData(value)
     }
 
+    const handleSort = (value) => {
+        //alert(value)
+        var sortedRecipes = {...recipeQuery}
+        if(value == "yield") {
+            sortedRecipes.hits.sort((recipe1, recipe2) => {
+                return recipe1.recipe.yield - recipe2.recipe.yield
+            })
+        }
+        else if(value == "calories") {
+            sortedRecipes.hits.sort((recipe1, recipe2) => {
+                return recipe1.recipe.calories - recipe2.recipe.calories
+            })
+        }
+        setRecipeQuery(sortedRecipes)
+    }
+
     return (
         <div className="main">        
-            <h1 id="headerText">FoodAlyser!</h1>            
-            <SearchRecipe handleOnSearch={handleSearch}/>
+            <h1 id="headerText">FoodAlyser!</h1> 
             {
                 recipeQuery != "" ?
-                <div className="recipesContainer">
-                    {
-                        recipeDataMsg == "" ? 
-                            recipeQuery.hits.map((recipeItem, index) => {
-                                return (
-                                    <RecipeCard recipe={recipeItem} key={index} />
-                                )                
-                            }) 
-                        : <p className="messageText">{recipeDataMsg}</p>
-                    }
-                </div> 
-                : (
+                <>           
+                    <SearchRecipe handleOnSearch={handleSearch} sortOn={true} onSort={handleSort}/>
                     <div className="recipesContainer">
-                        <p className="messageText">{recipeDataMsg}</p>
-                    </div>
+                        {
+                            recipeDataMsg == "" ? 
+                                recipeQuery.hits.map((recipeItem, index) => {
+                                    return (
+                                        <RecipeCard recipe={recipeItem} key={index} />
+                                    )                
+                                }) 
+                            : <p className="messageText">{recipeDataMsg}</p>
+                        }
+                    </div> 
+                </>
+                : (
+                    <>           
+                        <SearchRecipe handleOnSearch={handleSearch} />
+                        <div className="recipesContainer">
+                            <p className="messageText">{recipeDataMsg}</p>
+                        </div>
+                    </>
                 )
                 // recipeQuery != "" ?             
                 // <div className="recipesContainer">
